@@ -1,0 +1,29 @@
+package ${BASEDAO.package};
+
+import ${POJO.fullClassName};
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Mapper;
+
+/**
+* ${BASEDAO.simpleClassName} 自动生成基类
+* @author ${author}
+*/
+public interface ${BASEDAO.simpleClassName} {
+
+    /**
+     * 插入数据,只会插入非空字段
+     * @param createDO 要插入的DO类
+     * @return 影响行数
+     **/
+    int insertNotNull(${POJO.simpleClassName} createDO);
+
+
+    /**
+    * 更新数据,只会更新非空字段
+    * @param updateDO 要更新的DO类
+    * @return 影响行数
+    **/
+    int updateNotNull(${POJO.simpleClassName} updateDO);
+
+}

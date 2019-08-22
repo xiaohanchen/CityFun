@@ -1,0 +1,10 @@
+{
+  "defaultColumns": {
+    "gmt_create": "now()",
+    "gmt_modified": "now()"
+  },
+  "updateIgnore": [
+    "gmt_create",
+    "id"
+  ]
+}

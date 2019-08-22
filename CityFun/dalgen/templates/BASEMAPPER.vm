@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${DAO.fullClassName}">
+
+    <resultMap id="ALL-RESULTMAP" type="${POJO.fullClassName}">
+    #foreach($column in $table.columns)
+        <result property="${column.variableName}" column="${column.jdbcName}" javaType="${column.javaType}" jdbcType="${column.mybatisType}"/>
+    #end
+
+    </resultMap>
+
+
+    <sql id="ALL-COLS">
+        #foreach($column in $table.columns)
+            #if($velocityCount != $table.columns.size())
+                ${column.jdbcName},
+            #else
+                ${column.jdbcName}
+            #end
+        #end
+    </sql>
+
+
+    <!--dalgen start-->
+    <insert id="insertNotNull" parameterType="${POJO.fullClassName}">
+        insert into ${table.name}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            #foreach($column in $table.columns)
+                #if($defaultColumns.containsKey($column.jdbcName))
+                    ${column.jdbcName},
+                #else
+                    <if test="${column.variableName} != null">
+                        ${column.jdbcName},
+                    </if>
+                #end
+
+            #end
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #foreach($column in $table.columns)
+                #if($defaultColumns.containsKey($column.jdbcName))
+                    ${defaultColumns.get($column.jdbcName)},
+                #else
+                    <if test="${column.variableName} != null">
+                        #{${column.variableName},jdbcType=${column.mybatisType}},
+                    </if>
+                #end
+            #end
+        </trim>
+    </insert>
+
+    <update id="updateNotNull" parameterType="${POJO.fullClassName}">
+        update ${table.name}
+        <set>
+            #foreach($column in $table.columns)
+                #if($updateIgnore.contains($column.jdbcName))
+                #elseif($defaultColumns.containsKey($column.jdbcName))
+                    ${column.jdbcName} = ${defaultColumns.get($column.jdbcName)},
+                #else
+                    <if test="${column.variableName} != null">
+                        ${column.jdbcName} = #{${column.variableName},jdbcType=${column.mybatisType}},
+                    </if>
+                #end
+            #end
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--dalgen end 非自动生成sql在此后面追加,方便使用IDEA直接恢复-->
+
+</mapper>

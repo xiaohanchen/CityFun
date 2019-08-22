@@ -1,0 +1,15 @@
+package ${DAO.package};
+
+import ${POJO.fullClassName};
+import java.util.List;
+import ${BASEDAO.fullClassName};
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Mapper;
+
+/**
+* @author ${author}
+*/
+@Mapper
+public interface ${DAO.simpleClassName} extends ${BASEDAO.simpleClassName} {
+
+}
